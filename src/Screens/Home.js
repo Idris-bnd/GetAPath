@@ -61,6 +61,7 @@ const Home = ({ navigation }) => {
     onPress={() => navigation.navigate('ChooseLocation')}
     >
     <Text>Go to chooselocation screen</Text>
+    <Text>Hello Zoé</Text>
     </TouchableOpacity>
     </View>
   );
