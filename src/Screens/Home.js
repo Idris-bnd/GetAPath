@@ -7,76 +7,95 @@ import imagePath from '../constants/imagePath';
 
 const Home = ({ navigation }) => {
     
-  const [state, setState] = useState({
-    pickupCords: {
-      latitude: 43.4601984,
-      longitude: 6.766592,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    },
-    dropLocationCords: {
-      latitude: 43.4158602,
-      longitude: 6.8067538,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    },
-  });
+    const [state, setState] = useState({
+        pickupCords: {
+            latitude: 43.4601984,
+            longitude: 6.766592,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        dropLocationCords: {
+            latitude: 43.4158602,
+            longitude: 6.8067538,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+    });
 
-  const {pickupCords, dropLocationCords} = state;
-  const mapRef = useRef();
+    const {pickupCords, dropLocationCords} = state;
+    const mapRef = useRef();
 
-//   const GOOGLE_MAPS_APIKEY = 'dd';
+    const onPressLocation = () => {
+        navigation.navigate('ChooseLocation', { getCordinates: fetchValues });
+    }
 
-  return (
-    <View style={{flex: 1}}>
+    const fetchValues = (data) => {
+        console.log("=========>", data);
+        setState({
+            pickupCords:{
+                ...state.pickupCords,
+                latitude: data.pc.latitude,
+                longitude: data.pc.longitude
+            },
+            dropLocationCords:{
+                ...state.dropLocationCords,
+                latitude: data.dc.latitude,
+                longitude: data.dc.longitude
+            },
+        })
+    }
+
+
+    return (
         <View style={{flex: 1}}>
-            <MapView
-                style={StyleSheet.absoluteFill}
-                ref={mapRef}
-                initialRegion={pickupCords}
-            >
-                <Marker
-                coordinate={pickupCords}
-                image={imagePath.icCurLoc}
-                />
-                <Marker
-                coordinate={dropLocationCords}
-                image={imagePath.icGreenMarker}
-                />
-                <MapViewDirections
-                origin={pickupCords}
-                destination={dropLocationCords}
-                apikey={GOOGLE_MAPS_APIKEY}
-                strokeWidth={3}
-                strokeColor="red"
-                optimizeWayPoints={true}
-                onReady={result => {
-                    mapRef.current.fitToCoordinates(result.coordinates, {
-                    edgePadding: {
-                        right: 30,
-                        bottom: 300,
-                        left: 30,
-                        top: 100
-                    }
-                    })
-                }}
-                />
-            </MapView>
-        </View>
+            <View style={{flex: 1}}>
+                <MapView
+                    style={StyleSheet.absoluteFill}
+                    ref={mapRef}
+                    initialRegion={pickupCords}
+                >
+                    <Marker
+                    coordinate={pickupCords}
+                    image={imagePath.icCurLoc}
+                    />
+                    <Marker
+                    coordinate={dropLocationCords}
+                    image={imagePath.icGreenMarker}
+                    />
+                    <MapViewDirections
+                    origin={pickupCords}
+                    destination={dropLocationCords}
+                    apikey={GOOGLE_MAPS_APIKEY}
+                    strokeWidth={3}
+                    strokeColor="pink"
+                    optimizeWayPoints={true}
+                    onReady={result => {
+                        mapRef.current.fitToCoordinates(result.coordinates, {
+                        edgePadding: {
+                            right: 30,
+                            bottom: 300,
+                            left: 30,
+                            top: 100
+                        }
+                        })
+                    }}
+                    />
+                </MapView>
+            </View>
 
-        <View
-            style={styles.bottomCard}
-        >
-            <Text>Where are you going ?</Text>
-            <TouchableOpacity
-                onPress={() => navigation.navigate('ChooseLocation')}
-            style={styles.inputStyle}
+            <View
+                style={styles.bottomCard}
             >
-                <Text>Choose your location screen</Text>
-            </TouchableOpacity>
+                <Text>Where are you going ?</Text>
+                <TouchableOpacity
+                    onPress={onPressLocation}
+                style={styles.inputStyle}
+                >
+                    <Text>Choose your location</Text>
+                </TouchableOpacity>
+            </View>
         </View>
-    </View>
-  );
+    );
 }
 
 
