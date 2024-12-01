@@ -1,14 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Text, StyleSheet, View } from 'react-native'
+import AddressPickup from '../components/AddressPickup';
 
-export default class ChooseLocation extends Component {
-  render() {
+const ChooseLocation = () => {
     return (
-      <View>
-        <Text> textInComponent </Text>
+      <View style={styles.container}>
+          <AddressPickup placeholderText="Où voulez vous aller ?" />
       </View>
     )
-  }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#0F1A20',
+      color: '#FFF',
+    },
+})
+
+export default ChooseLocation;
