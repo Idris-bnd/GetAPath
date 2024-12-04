@@ -9,10 +9,10 @@ const Home = ({ navigation }) => {
     
     const [state, setState] = useState({
         pickupCords: {
-            latitude: 43.4601984,
-            longitude: 6.766592,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            // latitude: 43.4601984,
+            // longitude: 6.766592,
+            // latitudeDelta: 0.0922,
+            // longitudeDelta: 0.0421,
         },
         dropLocationCords: {
             // latitude: 43.4158602,
@@ -74,7 +74,7 @@ const Home = ({ navigation }) => {
                     coordinate={dropLocationCords}
                     image={imagePath.icGreenMarker}
                     />
-                    {pickupCords && dropLocationCords?.longitude  && (
+                    {pickupCords?.longitude && dropLocationCords?.longitude  && (
                         <MapViewDirections
                             origin={pickupCords}
                             destination={dropLocationCords}
