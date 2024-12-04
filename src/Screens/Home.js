@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -15,10 +15,10 @@ const Home = ({ navigation }) => {
             longitudeDelta: 0.0421,
         },
         dropLocationCords: {
-            latitude: 43.4158602,
-            longitude: 6.8067538,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            // latitude: 43.4158602,
+            // longitude: 6.8067538,
+            // latitudeDelta: 0.0922,
+            // longitudeDelta: 0.0421,
         },
     });
 
@@ -30,7 +30,6 @@ const Home = ({ navigation }) => {
     }
 
     const fetchValues = (data) => {
-        console.log("=========>", data);
         setState({
             pickupCords:{
                 ...state.pickupCords,
@@ -44,6 +43,19 @@ const Home = ({ navigation }) => {
             },
         })
     }
+
+    useEffect
+    (() => {
+        if (mapRef.current) {
+            mapRef.current.fitToCoordinates(
+                [pickupCords, dropLocationCords],
+                {
+                    edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+                    animated: true,
+                }
+            );
+        }
+    }, [pickupCords, dropLocationCords]);
 
 
     return (
@@ -62,24 +74,29 @@ const Home = ({ navigation }) => {
                     coordinate={dropLocationCords}
                     image={imagePath.icGreenMarker}
                     />
-                    <MapViewDirections
-                    origin={pickupCords}
-                    destination={dropLocationCords}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={3}
-                    strokeColor="pink"
-                    optimizeWayPoints={true}
-                    onReady={result => {
-                        mapRef.current.fitToCoordinates(result.coordinates, {
-                        edgePadding: {
-                            right: 30,
-                            bottom: 300,
-                            left: 30,
-                            top: 100
-                        }
-                        })
-                    }}
-                    />
+                    {pickupCords && dropLocationCords?.longitude  && (
+                        <MapViewDirections
+                            origin={pickupCords}
+                            destination={dropLocationCords}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={3}
+                            strokeColor="pink"
+                            optimizeWayPoints={true}
+                            onReady={(result) => {
+                                mapRef.current.fitToCoordinates(result.coordinates, {
+                                    edgePadding: {
+                                        right: 30,
+                                        bottom: 300,
+                                        left: 30,
+                                        top: 100,
+                                    },
+                                });
+                            }}
+                            onError={(errorMessage) => {
+                                console.log('MapViewDirections Error:', errorMessage);
+                            }}
+                        />
+                    )}
                 </MapView>
             </View>
 

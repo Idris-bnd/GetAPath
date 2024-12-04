@@ -7,7 +7,6 @@ const AddressPickup = ({ placeholderText, fetchAddress }) => {
 
     const onPressAddress = (data, details = null) => {
         // 'details' is provided when fetchDetails = true
-        console.log('details ========> ', details);
         const lat = details.geometry.location.lat;
         const lng = details.geometry.location.lng;
         fetchAddress(lat, lng);
